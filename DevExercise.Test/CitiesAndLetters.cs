@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace DevExercise.Test
@@ -10,7 +11,7 @@ namespace DevExercise.Test
         [TestMethod]
         public void BANG()
         {
-            Collection<string> cities = new Collection<string>();
+            HashSet<string> cities = new HashSet<string>();
             cities.Add("BANDUNG");
             cities.Add("BANGUI");
             cities.Add("BANGKOK");
@@ -35,7 +36,7 @@ namespace DevExercise.Test
         [TestMethod]
         public void LA()
         {
-            Collection<string> cities = new Collection<string>();
+            HashSet<string> cities = new HashSet<string>();
             cities.Add("LA PAZ");
             cities.Add("LA PLATA");
             cities.Add("LAGOS");
@@ -46,8 +47,8 @@ namespace DevExercise.Test
 
             CityResult cr = (CityResult)cf.Search("LA");
 
-            Assert.IsTrue(cr.NextLetters.Count == 3); 
-            Assert.IsTrue(cr.NextLetters.Contains(" ")); //checking for " " twice if there is only one will return true
+            Assert.IsTrue(cr.NextLetters.Count == 2); 
+            Assert.IsTrue(cr.NextLetters.Contains(" "));
             Assert.IsTrue(cr.NextLetters.Contains("G"));
 
             Assert.IsTrue(cr.NextCities.Count == 3);
@@ -59,7 +60,7 @@ namespace DevExercise.Test
         [TestMethod]
         public void ZE()
         {
-            Collection<string> cities = new Collection<string>();
+            HashSet<string> cities = new HashSet<string>();
             cities.Add("ZARIA");
             cities.Add("ZHUGHAI");
             cities.Add("ZIBO");
@@ -77,7 +78,7 @@ namespace DevExercise.Test
         [TestMethod]
         public void LEEDS()
         {
-            Collection<string> cities = new Collection<string>();
+            HashSet<string> cities = new HashSet<string>();
             cities.Add("ZARIA");
             cities.Add("ZHUGHAI");
             cities.Add("ZIBO");
@@ -95,8 +96,7 @@ namespace DevExercise.Test
 
             CityResult cr = (CityResult)cf.Search("LEEDS");
 
-            Assert.IsTrue(cr.NextLetters.Count == 1);
-            Assert.IsTrue(cr.NextLetters.Contains(" "));
+            Assert.IsTrue(cr.NextLetters.Count == 0);
 
             Assert.IsTrue(cr.NextCities.Count == 1);
             Assert.IsTrue(cr.NextCities.Contains("LEEDS"));
@@ -105,7 +105,7 @@ namespace DevExercise.Test
         [TestMethod]
         public void VaryingStringSizes()
         {
-            Collection<string> cities = new Collection<string>();
+            HashSet<string> cities = new HashSet<string>();
             string longestName = "Taumatawhakatangihangakoauauotamateaturipukakapikimaungahoronukupokaiwhenuakitanatahu"; //85 characters
             longestName = longestName.ToUpper();
             for (int i = 0; i < longestName.Length; i++)
@@ -119,8 +119,8 @@ namespace DevExercise.Test
             string search = longestName.Substring(0, 42);  //search with a substring half the size of the longest, so half
             CityResult cr = (CityResult)cf.Search(search); //of the collection gets thrown away and the other half into NextCities
 
-            Assert.IsTrue(cr.NextLetters.Count == longestName.Length - search.Length);
-            Assert.IsTrue(cr.NextLetters.Contains(longestName[search.Length].ToString())); //should only contain one letter and many duplicates
+            Assert.IsTrue(cr.NextLetters.Count == 1);
+            Assert.IsTrue(cr.NextLetters.Contains(longestName[search.Length].ToString()));
             
             Assert.IsTrue(cr.NextCities.Count == longestName.Length - search.Length);
             for (int i = search.Length; i < longestName.Length; i++)

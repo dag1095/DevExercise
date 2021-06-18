@@ -9,8 +9,8 @@ namespace DevExercise
     {
         public CityResult()
         {
-            NextLetters = new Collection<string>();
-            NextCities = new Collection<string>();
+            NextLetters = new HashSet<string>();
+            NextCities = new HashSet<string>();
         }
 
         public ICollection<string> NextLetters { get; set; }

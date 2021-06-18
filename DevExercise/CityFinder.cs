@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace DevExercise
 {
@@ -6,10 +8,10 @@ namespace DevExercise
     {
         //psuedo database of cities
         //this is only here so unit tests have somewhere to input dummy data
-        public Collection<string> Cities { get; set; }
+        public HashSet<string> Cities { get; set; }
         public CityFinder()
         {
-            Cities = new Collection<string>();
+            Cities = new HashSet<string>();
         }
 
         /**
@@ -17,7 +19,6 @@ namespace DevExercise
          *      if input is longer, skip to next city
          *      else, compare strings
          *          if input length < city length, add char from city string at input.Length to NextLetters
-         *          else, add " "
          *          then add city string to NextCities
          */
         public ICityResult Search(string searchString)
@@ -26,17 +27,18 @@ namespace DevExercise
 
             foreach (string city in Cities)
             {
-                if (searchString.Length > city.Length) continue;  //skip if the length of the input string is longer than the city string
-                else if(string.CompareOrdinal(searchString, city.Substring(0, searchString.Length)) == 0) //else ordinal comparison
+                if (searchString.Length > city.Length) continue;
+                else if(string.CompareOrdinal(searchString, city.Substring(0, searchString.Length)) == 0)
                 {
-                    if(searchString.Length < city.Length) 
+                    
+                    if (searchString.Length < city.Length)
+                    {
                         cr.NextLetters.Add(city[searchString.Length].ToString());
-                    else
-                        cr.NextLetters.Add(" ");
+                    }
                     cr.NextCities.Add(city);
                 }
             }
-            
+
             return cr;
         }
     }
